@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const productRoutes = require('./api/routes/products')
 const orderRouters = require('./api/routes/orders');
@@ -10,7 +11,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-app.use((req, res, mext) => {
+app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     if (req.method === 'OPTIONS') {
@@ -23,6 +24,16 @@ app.use((req, res, mext) => {
 // Routes which should handle requests
 app.use('/products', productRoutes)
 app.use('/orders', orderRouters)
+
+mongoose.connect(
+    'mongodb+srv://Langster2323:' + 
+    process.env.MONGO_ATLAS_PW + 
+    '@cluster0-x9jrv.mongodb.net/test?retryWrites=true&w=majority', 
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }
+);
 
 app.use((req, res, next) => {
     const error = new Error('Not Found');
