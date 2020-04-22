@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 
 const productRoutes = require('./api/routes/products')
 const orderRouters = require('./api/routes/orders');
+const userRouters = require('./api/routes/user');
 
 app.use(morgan('dev'));
 app.use('/uploads', express.static('uploads'));
@@ -23,8 +24,9 @@ app.use((req, res, next) => {
 });
 
 // Routes which should handle requests
-app.use('/products', productRoutes)
-app.use('/orders', orderRouters)
+app.use('/products', productRoutes);
+app.use('/orders', orderRouters);
+app.use('/user', userRouters);
 
 mongoose.connect(
     'mongodb+srv://Langster2323:' + 
